@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/Shiny.Spatial/Shiny.Spatial.csproj" />
+  <Project Path="tests/Shiny.Spatial.Tests/Shiny.Spatial.Tests.csproj" />
+</Solution>
