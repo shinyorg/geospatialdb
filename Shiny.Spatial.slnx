@@ -1,8 +1,16 @@
 <Solution>
-  <Folder Name="/Solution/">
-    <File Path=".editorconfig" />
-    <File Path="readme.md" />
-  </Folder>
+    <Folder Name="/Solution/">
+        <File Path=".editorconfig" />
+        <File Path=".github\workflows\build.yml" />
+        <File Path="Directory.build.props" />
+        <File Path="Directory.packages.props" />
+        <File Path="global.json" />
+        <File Path="LICENSE" />
+        <File Path="nuget.config" />
+        <File Path="nuget.txt" />
+        <File Path="readme.md" />
+        <File Path="version.json" />
+    </Folder>
   <Project Path="src/Shiny.Spatial/Shiny.Spatial.csproj" />
   <Project Path="tests/Shiny.Spatial.Tests/Shiny.Spatial.Tests.csproj" />
   <Project Path="tests/Shiny.Spatial.Benchmarks/Shiny.Spatial.Benchmarks.csproj" />

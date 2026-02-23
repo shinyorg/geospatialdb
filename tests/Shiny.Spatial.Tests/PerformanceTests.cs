@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using FluentAssertions;
+using Shouldly;
 using Shiny.Spatial.Database;
 using Shiny.Spatial.Geometry;
 using Xunit;
@@ -39,17 +39,17 @@ public class PerformanceTests : IDisposable
         table.BulkInsert(features);
         insertSw.Stop();
 
-        table.Count().Should().Be(100_000);
+        table.Count().ShouldBe(100_000);
 
         // Spatial query: small envelope
         var querySw = Stopwatch.StartNew();
         var results = table.FindInEnvelope(new Envelope(-10, 10, -10, 10));
         querySw.Stop();
 
-        results.Count.Should().BeGreaterThan(0);
+        results.Count.ShouldBeGreaterThan(0);
 
         // These are rough bounds — mainly ensuring queries are fast
-        insertSw.Elapsed.TotalSeconds.Should().BeLessThan(30, "100K inserts should complete in reasonable time");
-        querySw.Elapsed.TotalSeconds.Should().BeLessThan(1, "spatial query on 100K points should be fast");
+        insertSw.Elapsed.TotalSeconds.ShouldBeLessThan(30, "100K inserts should complete in reasonable time");
+        querySw.Elapsed.TotalSeconds.ShouldBeLessThan(1, "spatial query on 100K points should be fast");
     }
 }

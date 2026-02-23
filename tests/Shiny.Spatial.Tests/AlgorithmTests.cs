@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using FluentAssertions;
+using Shouldly;
 using Shiny.Spatial.Algorithms;
 using Shiny.Spatial.Geometry;
 using Xunit;
@@ -18,14 +18,14 @@ public class AlgorithmTests
         double distance = DistanceCalculator.Haversine(london, paris);
 
         // ~343 km known distance
-        distance.Should().BeApproximately(343_560, 1000);
+        distance.ShouldBe(343_560, 1000);
     }
 
     [Fact]
     public void Haversine_Same_Point_Is_Zero()
     {
         var point = new Coordinate(-104.99, 39.74);
-        DistanceCalculator.Haversine(point, point).Should().Be(0);
+        DistanceCalculator.Haversine(point, point).ShouldBe(0);
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public class AlgorithmTests
     {
         var a = new Coordinate(0, 0);
         var b = new Coordinate(3, 4);
-        DistanceCalculator.Euclidean(a, b).Should().BeApproximately(5.0, 1e-10);
+        DistanceCalculator.Euclidean(a, b).ShouldBe(5.0, 1e-10);
     }
 
     [Fact]
@@ -50,8 +50,8 @@ public class AlgorithmTests
         var denver = new Coordinate(-104.99, 39.74);
         var newYork = new Coordinate(-74.006, 40.7128);
 
-        PointInPolygon.Contains(colorado, denver).Should().BeTrue();
-        PointInPolygon.Contains(colorado, newYork).Should().BeFalse();
+        PointInPolygon.Contains(colorado, denver).ShouldBeTrue();
+        PointInPolygon.Contains(colorado, newYork).ShouldBeFalse();
     }
 
     [Fact]
@@ -72,13 +72,13 @@ public class AlgorithmTests
         var polygon = new Polygon(exterior, new[] { (IReadOnlyList<Coordinate>)hole });
 
         // Inside exterior, outside hole
-        PointInPolygon.Contains(polygon, new Coordinate(2, 2)).Should().BeTrue();
+        PointInPolygon.Contains(polygon, new Coordinate(2, 2)).ShouldBeTrue();
 
         // Inside hole (should not be contained)
-        PointInPolygon.Contains(polygon, new Coordinate(10, 10)).Should().BeFalse();
+        PointInPolygon.Contains(polygon, new Coordinate(10, 10)).ShouldBeFalse();
 
         // Outside exterior
-        PointInPolygon.Contains(polygon, new Coordinate(25, 25)).Should().BeFalse();
+        PointInPolygon.Contains(polygon, new Coordinate(25, 25)).ShouldBeFalse();
     }
 
     [Fact]
@@ -89,7 +89,7 @@ public class AlgorithmTests
         var b1 = new Coordinate(0, 10);
         var b2 = new Coordinate(10, 0);
 
-        SegmentIntersection.Intersects(a1, a2, b1, b2).Should().BeTrue();
+        SegmentIntersection.Intersects(a1, a2, b1, b2).ShouldBeTrue();
     }
 
     [Fact]
@@ -100,7 +100,7 @@ public class AlgorithmTests
         var b1 = new Coordinate(0, 5);
         var b2 = new Coordinate(10, 5);
 
-        SegmentIntersection.Intersects(a1, a2, b1, b2).Should().BeFalse();
+        SegmentIntersection.Intersects(a1, a2, b1, b2).ShouldBeFalse();
     }
 
     [Fact]
@@ -116,10 +116,10 @@ public class AlgorithmTests
         var inside = new Point(5, 5);
         var outside = new Point(15, 15);
 
-        SpatialPredicates.Intersects(inside, polygon).Should().BeTrue();
-        SpatialPredicates.Intersects(outside, polygon).Should().BeFalse();
-        SpatialPredicates.Contains(polygon, inside).Should().BeTrue();
-        SpatialPredicates.Contains(polygon, outside).Should().BeFalse();
+        SpatialPredicates.Intersects(inside, polygon).ShouldBeTrue();
+        SpatialPredicates.Intersects(outside, polygon).ShouldBeFalse();
+        SpatialPredicates.Contains(polygon, inside).ShouldBeTrue();
+        SpatialPredicates.Contains(polygon, outside).ShouldBeFalse();
     }
 
     [Fact]
@@ -144,7 +144,7 @@ public class AlgorithmTests
             new Coordinate(20, 20)
         });
 
-        SpatialPredicates.Intersects(a, b).Should().BeTrue();
-        SpatialPredicates.Intersects(a, c).Should().BeFalse();
+        SpatialPredicates.Intersects(a, b).ShouldBeTrue();
+        SpatialPredicates.Intersects(a, c).ShouldBeFalse();
     }
 }

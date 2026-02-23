@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using FluentAssertions;
+using Shouldly;
 using Shiny.Spatial.Geometry;
 using Shiny.Spatial.Serialization;
 using Xunit;
@@ -15,9 +15,9 @@ public class WkbTests
         var wkb = WkbWriter.Write(original);
         var result = WkbReader.Read(wkb) as Point;
 
-        result.Should().NotBeNull();
-        result!.X.Should().Be(-104.99);
-        result.Y.Should().Be(39.74);
+        result.ShouldNotBeNull();
+        result!.X.ShouldBe(-104.99);
+        result.Y.ShouldBe(39.74);
     }
 
     [Fact]
@@ -33,10 +33,10 @@ public class WkbTests
         var wkb = WkbWriter.Write(original);
         var result = WkbReader.Read(wkb) as LineString;
 
-        result.Should().NotBeNull();
-        result!.Coordinates.Count.Should().Be(3);
-        result.Coordinates[0].Should().Be(new Coordinate(0, 0));
-        result.Coordinates[2].Should().Be(new Coordinate(20, 0));
+        result.ShouldNotBeNull();
+        result!.Coordinates.Count.ShouldBe(3);
+        result.Coordinates[0].ShouldBe(new Coordinate(0, 0));
+        result.Coordinates[2].ShouldBe(new Coordinate(20, 0));
     }
 
     [Fact]
@@ -52,9 +52,9 @@ public class WkbTests
         var wkb = WkbWriter.Write(original);
         var result = WkbReader.Read(wkb) as Polygon;
 
-        result.Should().NotBeNull();
-        result!.ExteriorRing.Count.Should().Be(5);
-        result.InteriorRings.Count.Should().Be(0);
+        result.ShouldNotBeNull();
+        result!.ExteriorRing.Count.ShouldBe(5);
+        result.InteriorRings.Count.ShouldBe(0);
     }
 
     [Fact]
@@ -77,10 +77,10 @@ public class WkbTests
         var wkb = WkbWriter.Write(original);
         var result = WkbReader.Read(wkb) as Polygon;
 
-        result.Should().NotBeNull();
-        result!.ExteriorRing.Count.Should().Be(5);
-        result.InteriorRings.Count.Should().Be(1);
-        result.InteriorRings[0].Count.Should().Be(5);
+        result.ShouldNotBeNull();
+        result!.ExteriorRing.Count.ShouldBe(5);
+        result.InteriorRings.Count.ShouldBe(1);
+        result.InteriorRings[0].Count.ShouldBe(5);
     }
 
     [Fact]
@@ -95,9 +95,9 @@ public class WkbTests
         var wkb = WkbWriter.Write(original);
         var result = WkbReader.Read(wkb) as MultiPoint;
 
-        result.Should().NotBeNull();
-        result!.Points.Count.Should().Be(2);
-        result.Points[0].X.Should().Be(1);
+        result.ShouldNotBeNull();
+        result!.Points.Count.ShouldBe(2);
+        result.Points[0].X.ShouldBe(1);
     }
 
     [Fact]
@@ -112,8 +112,8 @@ public class WkbTests
         var wkb = WkbWriter.Write(original);
         var result = WkbReader.Read(wkb) as MultiLineString;
 
-        result.Should().NotBeNull();
-        result!.LineStrings.Count.Should().Be(2);
+        result.ShouldNotBeNull();
+        result!.LineStrings.Count.ShouldBe(2);
     }
 
     [Fact]
@@ -141,8 +141,8 @@ public class WkbTests
         var wkb = WkbWriter.Write(original);
         var result = WkbReader.Read(wkb) as MultiPolygon;
 
-        result.Should().NotBeNull();
-        result!.Polygons.Count.Should().Be(2);
+        result.ShouldNotBeNull();
+        result!.Polygons.Count.ShouldBe(2);
     }
 
     [Fact]
@@ -157,9 +157,9 @@ public class WkbTests
         var wkb = WkbWriter.Write(original);
         var result = WkbReader.Read(wkb) as GeometryCollection;
 
-        result.Should().NotBeNull();
-        result!.Geometries.Count.Should().Be(2);
-        result.Geometries[0].Should().BeOfType<Point>();
-        result.Geometries[1].Should().BeOfType<LineString>();
+        result.ShouldNotBeNull();
+        result!.Geometries.Count.ShouldBe(2);
+        result.Geometries[0].ShouldBeOfType<Point>();
+        result.Geometries[1].ShouldBeOfType<LineString>();
     }
 }

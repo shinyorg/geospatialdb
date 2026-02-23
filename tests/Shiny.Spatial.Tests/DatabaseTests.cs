@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using FluentAssertions;
+using Shouldly;
 using Shiny.Spatial.Database;
 using Shiny.Spatial.Geometry;
 using Xunit;
@@ -25,10 +25,10 @@ public class DatabaseTests : IDisposable
             new PropertyDefinition("name", PropertyType.Text),
             new PropertyDefinition("population", PropertyType.Integer));
 
-        _db.TableExists("cities").Should().BeTrue();
-        _db.TableExists("nonexistent").Should().BeFalse();
-        table.Name.Should().Be("cities");
-        table.CoordinateSystem.Should().Be(CoordinateSystem.Wgs84);
+        _db.TableExists("cities").ShouldBeTrue();
+        _db.TableExists("nonexistent").ShouldBeFalse();
+        table.Name.ShouldBe("cities");
+        table.CoordinateSystem.ShouldBe(CoordinateSystem.Wgs84);
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public class DatabaseTests : IDisposable
     {
         _db.CreateTable("cities", CoordinateSystem.Wgs84);
         var act = () => _db.CreateTable("cities", CoordinateSystem.Wgs84);
-        act.Should().Throw<InvalidOperationException>();
+        Should.Throw<InvalidOperationException>(act);
     }
 
     [Fact]
@@ -46,24 +46,24 @@ public class DatabaseTests : IDisposable
             new PropertyDefinition("name", PropertyType.Text));
 
         var table = _db.GetTable("cities");
-        table.Name.Should().Be("cities");
-        table.Properties.Count.Should().Be(1);
+        table.Name.ShouldBe("cities");
+        table.Properties.Count.ShouldBe(1);
     }
 
     [Fact]
     public void GetTable_Nonexistent_Throws()
     {
         var act = () => _db.GetTable("nonexistent");
-        act.Should().Throw<KeyNotFoundException>();
+        Should.Throw<KeyNotFoundException>(act);
     }
 
     [Fact]
     public void DropTable()
     {
         _db.CreateTable("temp", CoordinateSystem.Cartesian);
-        _db.TableExists("temp").Should().BeTrue();
+        _db.TableExists("temp").ShouldBeTrue();
         _db.DropTable("temp");
-        _db.TableExists("temp").Should().BeFalse();
+        _db.TableExists("temp").ShouldBeFalse();
     }
 
     [Fact]
@@ -79,19 +79,19 @@ public class DatabaseTests : IDisposable
         };
 
         long id = table.Insert(feature);
-        id.Should().BeGreaterThan(0);
-        feature.Id.Should().Be(id);
+        id.ShouldBeGreaterThan(0);
+        feature.Id.ShouldBe(id);
 
         var retrieved = table.GetById(id);
-        retrieved.Should().NotBeNull();
-        retrieved!.Id.Should().Be(id);
-        retrieved.Properties["name"].Should().Be("Denver");
-        retrieved.Properties["population"].Should().Be(715000L);
+        retrieved.ShouldNotBeNull();
+        retrieved!.Id.ShouldBe(id);
+        retrieved.Properties["name"].ShouldBe("Denver");
+        retrieved.Properties["population"].ShouldBe(715000L);
 
         var geom = retrieved.Geometry as Point;
-        geom.Should().NotBeNull();
-        geom!.X.Should().Be(-104.99);
-        geom.Y.Should().Be(39.74);
+        geom.ShouldNotBeNull();
+        geom!.X.ShouldBe(-104.99);
+        geom.Y.ShouldBe(39.74);
     }
 
     [Fact]
@@ -114,8 +114,8 @@ public class DatabaseTests : IDisposable
         table.Update(updated);
 
         var retrieved = table.GetById(feature.Id);
-        retrieved!.Properties["name"].Should().Be("New Name");
-        (retrieved.Geometry as Point)!.X.Should().Be(1);
+        retrieved!.Properties["name"].ShouldBe("New Name");
+        (retrieved.Geometry as Point)!.X.ShouldBe(1);
     }
 
     [Fact]
@@ -125,21 +125,21 @@ public class DatabaseTests : IDisposable
         var feature = new SpatialFeature(new Point(0, 0));
         table.Insert(feature);
 
-        table.Count().Should().Be(1);
-        table.Delete(feature.Id).Should().BeTrue();
-        table.Count().Should().Be(0);
-        table.GetById(feature.Id).Should().BeNull();
+        table.Count().ShouldBe(1);
+        table.Delete(feature.Id).ShouldBeTrue();
+        table.Count().ShouldBe(0);
+        table.GetById(feature.Id).ShouldBeNull();
     }
 
     [Fact]
     public void Count()
     {
         var table = _db.CreateTable("cities", CoordinateSystem.Wgs84);
-        table.Count().Should().Be(0);
+        table.Count().ShouldBe(0);
 
         table.Insert(new SpatialFeature(new Point(0, 0)));
         table.Insert(new SpatialFeature(new Point(1, 1)));
-        table.Count().Should().Be(2);
+        table.Count().ShouldBe(2);
     }
 
     [Fact]
@@ -151,10 +151,10 @@ public class DatabaseTests : IDisposable
             features.Add(new SpatialFeature(new Point(i, i)));
 
         table.BulkInsert(features);
-        table.Count().Should().Be(100);
+        table.Count().ShouldBe(100);
 
         foreach (var f in features)
-            f.Id.Should().BeGreaterThan(0);
+            f.Id.ShouldBeGreaterThan(0);
     }
 
     [Fact]
@@ -166,8 +166,8 @@ public class DatabaseTests : IDisposable
         table.Insert(new SpatialFeature(new Point(25, 25)));
 
         var results = table.FindInEnvelope(new Envelope(0, 10, 0, 10));
-        results.Count.Should().Be(1);
-        (results[0].Geometry as Point)!.X.Should().Be(5);
+        results.Count.ShouldBe(1);
+        (results[0].Geometry as Point)!.X.ShouldBe(5);
     }
 
     [Fact]
@@ -186,7 +186,7 @@ public class DatabaseTests : IDisposable
         });
 
         var results = table.FindIntersecting(searchArea);
-        results.Count.Should().Be(2);
+        results.Count.ShouldBe(2);
     }
 
     [Fact]
@@ -213,9 +213,9 @@ public class DatabaseTests : IDisposable
 
         // Search within 150km of Denver
         var results = table.FindWithinDistance(new Coordinate(-104.99, 39.74), 150_000);
-        results.Count.Should().Be(2);
-        results.Should().Contain(f => (string)f.Properties["name"]! == "Denver");
-        results.Should().Contain(f => (string)f.Properties["name"]! == "Colorado Springs");
+        results.Count.ShouldBe(2);
+        results.ShouldContain(f => (string)f.Properties["name"]! == "Denver");
+        results.ShouldContain(f => (string)f.Properties["name"]! == "Colorado Springs");
     }
 
     [Fact]
@@ -234,6 +234,6 @@ public class DatabaseTests : IDisposable
         });
 
         var results = table.FindContainedBy(container);
-        results.Count.Should().Be(2);
+        results.Count.ShouldBe(2);
     }
 }

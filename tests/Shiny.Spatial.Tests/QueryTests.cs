@@ -1,5 +1,5 @@
 using System;
-using FluentAssertions;
+using Shouldly;
 using Shiny.Spatial.Database;
 using Shiny.Spatial.Geometry;
 using Xunit;
@@ -50,7 +50,7 @@ public class QueryTests : IDisposable
             .WithinDistance(center, 150_000)
             .ToList();
 
-        results.Count.Should().Be(3); // Denver, C.Springs, Boulder
+        results.Count.ShouldBe(3); // Denver, C.Springs, Boulder
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class QueryTests : IDisposable
             .WhereProperty("population", ">", 200000L)
             .ToList();
 
-        results.Count.Should().Be(2); // Denver and C.Springs
+        results.Count.ShouldBe(2); // Denver and C.Springs
     }
 
     [Fact]
@@ -75,8 +75,8 @@ public class QueryTests : IDisposable
             .Limit(2)
             .ToList();
 
-        results.Count.Should().Be(2);
-        results[0].Properties["name"].Should().Be("Denver"); // closest
+        results.Count.ShouldBe(2);
+        results[0].Properties["name"].ShouldBe("Denver"); // closest
     }
 
     [Fact]
@@ -94,8 +94,8 @@ public class QueryTests : IDisposable
             .Intersecting(colorado)
             .ToList();
 
-        results.Count.Should().Be(3); // Denver, C.Springs, Boulder
-        results.Should().NotContain(f => (string)f.Properties["name"]! == "New York");
+        results.Count.ShouldBe(3); // Denver, C.Springs, Boulder
+        results.ShouldNotContain(f => (string)f.Properties["name"]! == "New York");
     }
 
     [Fact]
@@ -106,8 +106,8 @@ public class QueryTests : IDisposable
             .WhereProperty("name", "=", "Denver")
             .ToList();
 
-        results.Count.Should().Be(1);
-        results[0].Properties["name"].Should().Be("Denver");
+        results.Count.ShouldBe(1);
+        results[0].Properties["name"].ShouldBe("Denver");
     }
 
     [Fact]
@@ -121,8 +121,8 @@ public class QueryTests : IDisposable
             .Limit(1)
             .ToList();
 
-        results.Count.Should().Be(1);
-        results[0].Properties["name"].Should().NotBe("Denver"); // skipped Denver
+        results.Count.ShouldBe(1);
+        results[0].Properties["name"].ShouldNotBe("Denver"); // skipped Denver
     }
 
     [Fact]
@@ -132,7 +132,7 @@ public class QueryTests : IDisposable
             .InEnvelope(new Envelope(-180, 180, -90, 90))
             .Count();
 
-        count.Should().Be(4);
+        count.ShouldBe(4);
     }
 
     [Fact]
@@ -144,8 +144,8 @@ public class QueryTests : IDisposable
             .OrderByDistance(center)
             .FirstOrDefault();
 
-        result.Should().NotBeNull();
-        result!.Properties["name"].Should().Be("Denver");
+        result.ShouldNotBeNull();
+        result!.Properties["name"].ShouldBe("Denver");
     }
 
     [Fact]
@@ -155,6 +155,6 @@ public class QueryTests : IDisposable
             .InEnvelope(new Envelope(100, 110, 100, 110))
             .FirstOrDefault();
 
-        result.Should().BeNull();
+        result.ShouldBeNull();
     }
 }

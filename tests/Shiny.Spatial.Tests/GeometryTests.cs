@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using FluentAssertions;
+using Shouldly;
 using Shiny.Spatial.Geometry;
 using Xunit;
 
@@ -15,28 +15,28 @@ public class GeometryTests
         var b = new Coordinate(1.0, 2.0);
         var c = new Coordinate(3.0, 4.0);
 
-        a.Should().Be(b);
-        a.Should().NotBe(c);
-        (a == b).Should().BeTrue();
-        (a != c).Should().BeTrue();
+        a.ShouldBe(b);
+        a.ShouldNotBe(c);
+        (a == b).ShouldBeTrue();
+        (a != c).ShouldBeTrue();
     }
 
     [Fact]
     public void Coordinate_LonLat_Aliases()
     {
         var c = new Coordinate(-104.99, 39.74);
-        c.Longitude.Should().Be(-104.99);
-        c.Latitude.Should().Be(39.74);
+        c.Longitude.ShouldBe(-104.99);
+        c.Latitude.ShouldBe(39.74);
     }
 
     [Fact]
     public void Point_Properties()
     {
         var p = new Point(-104.99, 39.74);
-        p.X.Should().Be(-104.99);
-        p.Y.Should().Be(39.74);
-        p.Type.Should().Be(GeometryType.Point);
-        p.IsEmpty.Should().BeFalse();
+        p.X.ShouldBe(-104.99);
+        p.Y.ShouldBe(39.74);
+        p.Type.ShouldBe(GeometryType.Point);
+        p.IsEmpty.ShouldBeFalse();
     }
 
     [Fact]
@@ -44,17 +44,17 @@ public class GeometryTests
     {
         var p = new Point(10, 20);
         var env = p.GetEnvelope();
-        env.MinX.Should().Be(10);
-        env.MaxX.Should().Be(10);
-        env.MinY.Should().Be(20);
-        env.MaxY.Should().Be(20);
+        env.MinX.ShouldBe(10);
+        env.MaxX.ShouldBe(10);
+        env.MinY.ShouldBe(20);
+        env.MaxY.ShouldBe(20);
     }
 
     [Fact]
     public void LineString_RequiresAtLeastTwoCoordinates()
     {
         var act = () => new LineString(new[] { new Coordinate(0, 0) });
-        act.Should().Throw<ArgumentException>();
+        Should.Throw<ArgumentException>(act);
     }
 
     [Fact]
@@ -68,10 +68,10 @@ public class GeometryTests
         });
 
         var env = ls.GetEnvelope();
-        env.MinX.Should().Be(0);
-        env.MaxX.Should().Be(20);
-        env.MinY.Should().Be(-3);
-        env.MaxY.Should().Be(5);
+        env.MinX.ShouldBe(0);
+        env.MaxX.ShouldBe(20);
+        env.MinY.ShouldBe(-3);
+        env.MaxY.ShouldBe(5);
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class GeometryTests
             new Coordinate(1, 0),
             new Coordinate(0, 0)
         });
-        act.Should().Throw<ArgumentException>();
+        Should.Throw<ArgumentException>(act);
     }
 
     [Fact]
@@ -103,22 +103,22 @@ public class GeometryTests
         };
 
         var pg = new Polygon(exterior, new[] { (IReadOnlyList<Coordinate>)hole });
-        pg.ExteriorRing.Count.Should().Be(5);
-        pg.InteriorRings.Count.Should().Be(1);
+        pg.ExteriorRing.Count.ShouldBe(5);
+        pg.InteriorRings.Count.ShouldBe(1);
     }
 
     [Fact]
     public void Envelope_Contains_And_Intersects()
     {
         var env = new Envelope(0, 10, 0, 10);
-        env.Contains(new Coordinate(5, 5)).Should().BeTrue();
-        env.Contains(new Coordinate(15, 5)).Should().BeFalse();
+        env.Contains(new Coordinate(5, 5)).ShouldBeTrue();
+        env.Contains(new Coordinate(15, 5)).ShouldBeFalse();
 
         var other = new Envelope(5, 15, 5, 15);
-        env.Intersects(other).Should().BeTrue();
+        env.Intersects(other).ShouldBeTrue();
 
         var disjoint = new Envelope(20, 30, 20, 30);
-        env.Intersects(disjoint).Should().BeFalse();
+        env.Intersects(disjoint).ShouldBeFalse();
     }
 
     [Fact]
@@ -126,10 +126,10 @@ public class GeometryTests
     {
         var env = new Envelope(0, 10, 0, 10);
         var expanded = env.ExpandToInclude(new Coordinate(15, -5));
-        expanded.MinX.Should().Be(0);
-        expanded.MaxX.Should().Be(15);
-        expanded.MinY.Should().Be(-5);
-        expanded.MaxY.Should().Be(10);
+        expanded.MinX.ShouldBe(0);
+        expanded.MaxX.ShouldBe(15);
+        expanded.MinY.ShouldBe(-5);
+        expanded.MaxY.ShouldBe(10);
     }
 
     [Fact]
@@ -143,10 +143,10 @@ public class GeometryTests
         });
 
         var env = mp.GetEnvelope();
-        env.MinX.Should().Be(-1);
-        env.MaxX.Should().Be(3);
-        env.MinY.Should().Be(0);
-        env.MaxY.Should().Be(4);
+        env.MinX.ShouldBe(-1);
+        env.MaxX.ShouldBe(3);
+        env.MinY.ShouldBe(0);
+        env.MaxY.ShouldBe(4);
     }
 
     [Fact]
@@ -159,9 +159,9 @@ public class GeometryTests
         });
 
         var env = gc.GetEnvelope();
-        env.MinX.Should().Be(0);
-        env.MaxX.Should().Be(100);
-        env.MinY.Should().Be(0);
-        env.MaxY.Should().Be(50);
+        env.MinX.ShouldBe(0);
+        env.MaxX.ShouldBe(100);
+        env.MinY.ShouldBe(0);
+        env.MaxY.ShouldBe(50);
     }
 }
