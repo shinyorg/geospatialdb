@@ -9,6 +9,7 @@
         <File Path="nuget.config" />
         <File Path="nuget.txt" />
         <File Path="readme.md" />
+        <File Path="SKILLS\shiny-spatial\SKILL.md" />
         <File Path="version.json" />
     </Folder>
   <Project Path="src/Shiny.Spatial/Shiny.Spatial.csproj" />
