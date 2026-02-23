@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'skills/**'
+      - 'SKILLS/**'
   workflow_dispatch:
 
 jobs:
@@ -34,11 +34,11 @@ jobs:
         run: |
           # Copy skills content only (not plugin manifests)
           # The target repo has its own plugin structure
-          if [ -d "source/skills/shiny-sqlitedocumentdb" ]; then
+          if [ -d "source/SKILLS/shiny-spatial" ]; then
             # Remove existing skill directory to ensure clean sync
-            rm -rf skills-repo/skills/shiny-sqlitedocumentdb
+            rm -rf skills-repo/skills/shiny-spatial
             mkdir -p skills-repo/skills
-            cp -r source/skills/shiny-sqlitedocumentdb skills-repo/skills/
+            cp -r source/SKILLS/shiny-spatial skills-repo/skills/
           fi
 
       - name: Create Pull Request
@@ -46,17 +46,17 @@ jobs:
         with:
           token: ${{ secrets.SKILLS_REPO_TOKEN }}
           path: skills-repo
-          commit-message: "Update shiny-sqlitedocumentdb skill from SqliteDocumentDb repository"
-          title: "Update shiny-sqlitedocumentdb skill"
+          commit-message: "Update shiny-spatial skill from geospatialdb repository"
+          title: "Update shiny-spatial skill"
           body: |
-            This PR updates the shiny-sqlitedocumentdb skill from the [SqliteDocumentDb repository](https://github.com/shinyorg/SqliteDocumentDb).
+            This PR updates the shiny-spatial skill from the [geospatialdb repository](https://github.com/shinyorg/geospatialdb).
 
             **Source commit:** ${{ github.sha }}
             **Triggered by:** @${{ github.actor }}
 
             ---
-            *This PR was automatically created by the [sync-skills workflow](https://github.com/shinyorg/SqliteDocumentDb/actions/workflows/sync-skills.yml).*
-          branch: update-shiny-sqlitedocumentdb-skill
+            *This PR was automatically created by the [sync-skills workflow](https://github.com/shinyorg/geospatialdb/actions/workflows/sync-skills.yml).*
+          branch: update-shiny-spatial-skill
           delete-branch: true
           labels: |
             automated
