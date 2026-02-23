@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/Solution/">
+    <File Path=".editorconfig" />
+    <File Path="readme.md" />
+  </Folder>
   <Project Path="src/Shiny.Spatial/Shiny.Spatial.csproj" />
   <Project Path="tests/Shiny.Spatial.Tests/Shiny.Spatial.Tests.csproj" />
 </Solution>
