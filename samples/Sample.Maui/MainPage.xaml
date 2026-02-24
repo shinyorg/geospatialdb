@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Sample.Maui.MainPage"
+    Title="Spatial GPS">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="20" RowSpacing="15">
+
+        <Button
+            x:Name="ToggleButton"
+            Text="Start GPS"
+            Clicked="OnToggleClicked"
+            Grid.Row="0" />
+
+        <VerticalStackLayout Grid.Row="1" Spacing="5">
+            <Label Text="Current State:" FontAttributes="Bold" />
+            <Label x:Name="CurrentStateLabel" Text="--" FontSize="24" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="2" Spacing="5">
+            <Label Text="Previous State:" FontAttributes="Bold" />
+            <Label x:Name="PreviousStateLabel" Text="--" FontSize="18" TextColor="Gray" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="3" Spacing="5">
+            <Label Text="Change History:" FontAttributes="Bold" />
+            <CollectionView x:Name="HistoryList">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding .}" Padding="0,4" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+
+    </Grid>
+
+</ContentPage>

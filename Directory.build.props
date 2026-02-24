@@ -1,5 +1,6 @@
 <Project>
     <PropertyGroup>
+        <BaseTargetFramwork>net10.0</BaseTargetFramwork>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -17,6 +18,8 @@
         <PackageReleaseNotes>https://shinylib.net/release-notes</PackageReleaseNotes>
         <PackageProjectUrl>https://shinylib.net</PackageProjectUrl>
         <PackageTags>sqlite shiny spatial geospatial</PackageTags>
+        
+        <MauiVersion>10.0.41</MauiVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">

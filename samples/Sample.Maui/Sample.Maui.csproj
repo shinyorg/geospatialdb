@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>$(BaseTargetFramework)-ios;$(BaseTargetFramework)-android</TargetFrameworks>
+        <OutputType>Exe</OutputType>
+        <UseMaui>true</UseMaui>
+        <SingleProject>true</SingleProject>
+        <RootNamespace>Sample.Maui</RootNamespace>
+
+        <ApplicationTitle>Spatial GPS Sample</ApplicationTitle>
+        <ApplicationId>com.shinylib.spatial.sample</ApplicationId>
+        <ApplicationVersion>1</ApplicationVersion>
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Shiny.Spatial.Geofencing\Shiny.Spatial.Geofencing.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Maui.Controls"/>
+        <PackageReference Include="Shiny.Locations"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)"/>
+    </ItemGroup>
+
+</Project>

@@ -14,6 +14,8 @@
     </Folder>
   <Project Path="src/Shiny.Spatial/Shiny.Spatial.csproj" />
   <Project Path="tests/Shiny.Spatial.Tests/Shiny.Spatial.Tests.csproj" />
+    <Project Path="src\Shiny.Spatial.Geofencing\Shiny.Spatial.Geofencing.csproj" />
   <Project Path="tests/Shiny.Spatial.Benchmarks/Shiny.Spatial.Benchmarks.csproj" />
   <Project Path="tools/Shiny.Spatial.DatabaseSeeder/Shiny.Spatial.DatabaseSeeder.csproj" />
+  <Project Path="samples/Sample.Maui/Sample.Maui.csproj" />
 </Solution>

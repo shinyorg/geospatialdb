@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net10.0-ios;net10.0-android</TargetFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../Shiny.Spatial/Shiny.Spatial.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Shiny.Locations"/>
+    </ItemGroup>
+
+</Project>
