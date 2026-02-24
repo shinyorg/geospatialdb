@@ -1,3 +1,4 @@
+#if IOS || ANDROID
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Shiny.Spatial.Geofencing;
@@ -23,3 +24,4 @@ public static class SpatialGpsServiceCollectionExtensions
         return services;
     }
 }
+#endif

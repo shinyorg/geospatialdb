@@ -39,12 +39,12 @@ public class SpatialGpsDelegate : GpsDelegate, IDisposable
         foreach (var entry in config.Entries)
         {
             var key = $"{entry.DatabasePath}|{entry.TableName}";
-            if (tables.ContainsKey(key))
-                continue;
-
-            var db = new SpatialDatabase(entry.DatabasePath);
-            var table = db.GetTable(entry.TableName);
-            tables[key] = (db, table);
+            if (!tables.ContainsKey(key))
+            {
+                var db = new SpatialDatabase(entry.DatabasePath);
+                var table = db.GetTable(entry.TableName);
+                tables[key] = (db, table);
+            }
         }
     }
 
