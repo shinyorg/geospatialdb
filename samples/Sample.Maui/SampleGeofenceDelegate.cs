@@ -1,20 +1,17 @@
 using Microsoft.Extensions.Logging;
+using Shiny.Notifications;
 using Shiny.Spatial.Geofencing;
 
 namespace Sample.Maui;
 
-public class SampleGeofenceDelegate : ISpatialGeofenceDelegate
+public class SampleGeofenceDelegate(
+    ILogger<SampleGeofenceDelegate> logger, 
+    INotificationManager notifications
+) : ISpatialGeofenceDelegate
 {
-    readonly ILogger<SampleGeofenceDelegate> logger;
-
     public static event EventHandler<SpatialRegionChange>? RegionChanged;
 
-    public SampleGeofenceDelegate(ILogger<SampleGeofenceDelegate> logger)
-    {
-        this.logger = logger;
-    }
-
-    public Task OnRegionChanged(SpatialRegionChange change)
+    public async Task OnRegionChanged(SpatialRegionChange change)
     {
         logger.LogInformation(
             "Region changed in {Table}: {Previous} -> {Current}",
@@ -24,6 +21,10 @@ public class SampleGeofenceDelegate : ISpatialGeofenceDelegate
         );
 
         RegionChanged?.Invoke(this, change);
-        return Task.CompletedTask;
+
+        var prev = change.PreviousRegion?.Properties.GetValueOrDefault("name") ?? "None";
+        var current = change.CurrentRegion?.Properties.GetValueOrDefault("name") ?? "None";
+            
+        await notifications.Send("Geofence Alert", $"Region changed: {prev} -> {current}");
     }
 }

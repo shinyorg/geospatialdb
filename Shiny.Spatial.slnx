@@ -17,5 +17,11 @@
     <Project Path="src\Shiny.Spatial.Geofencing\Shiny.Spatial.Geofencing.csproj" />
   <Project Path="tests/Shiny.Spatial.Benchmarks/Shiny.Spatial.Benchmarks.csproj" />
   <Project Path="tools/Shiny.Spatial.DatabaseSeeder/Shiny.Spatial.DatabaseSeeder.csproj" />
+    <Folder Name="/Solution/databases/">
+        <File Path="databases\ca-cities.db" />
+        <File Path="databases\ca-provinces.db" />
+        <File Path="databases\us-cities.db" />
+        <File Path="databases\us-states.db" />
+    </Folder>
   <Project Path="samples/Sample.Maui/Sample.Maui.csproj" />
 </Solution>

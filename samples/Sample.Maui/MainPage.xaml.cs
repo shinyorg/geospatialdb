@@ -1,19 +1,22 @@
 using System.Collections.ObjectModel;
 using Shiny.Locations;
-using Shiny.Spatial.Gps;
+using Shiny.Notifications;
+using Shiny.Spatial.Geofencing;
 
 namespace Sample.Maui;
 
 public partial class MainPage : ContentPage
 {
-    readonly IGpsManager gpsManager;
+    readonly ISpatialGeofenceManager geofences;
+    readonly INotificationManager notifications;
     readonly ObservableCollection<string> history = new();
     bool isListening;
 
-    public MainPage(IGpsManager gpsManager)
+    public MainPage(ISpatialGeofenceManager geofences, INotificationManager notifications)
     {
         InitializeComponent();
-        this.gpsManager = gpsManager;
+        this.geofences = geofences;
+        this.notifications = notifications;
         HistoryList.ItemsSource = history;
 
         SampleGeofenceDelegate.RegionChanged += OnRegionChanged;
@@ -37,22 +40,24 @@ public partial class MainPage : ContentPage
     {
         try
         {
+            await this.notifications.RequestAccess();
+            
             if (isListening)
             {
-                await gpsManager.StopListener();
+                await this.geofences.Stop();
                 isListening = false;
-                ToggleButton.Text = "Start GPS";
+                ToggleButton.Text = "Start Geofencing";
             }
             else
             {
-                await gpsManager.StartListener(new GpsRequest());
+                await this.geofences.Start();
                 isListening = true;
-                ToggleButton.Text = "Stop GPS";
+                ToggleButton.Text = "Stop Geofencing";
             }
         }
         catch (Exception ex)
         {
-            await DisplayAlertAsync("GPS", $"GPS error: {ex.Message}", "OK");
+            await DisplayAlertAsync("Geofencing", $"Geofencing error: {ex.Message}", "OK");
         }
     }
 }

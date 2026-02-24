@@ -1,11 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
-        <LangVersion>12.0</LangVersion>
-        <Nullable>enable</Nullable>
-        <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">true</IsAotCompatible>
-        <IsTrimmable Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">true</IsTrimmable>
+        <TargetFrameworks>netstandard2.0;$(BaseTargetFramework)</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>

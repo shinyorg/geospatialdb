@@ -23,6 +23,8 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Maui.Controls"/>
         <PackageReference Include="Shiny.Locations"/>
+        <PackageReference Include="Shiny.Notifications"/>
+        <PackageReference Include="Shiny.Hosting.Maui"/>
     </ItemGroup>
 
     <ItemGroup>

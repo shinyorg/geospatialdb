@@ -9,16 +9,19 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseShiny()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        var dbPath = Path.Combine(FileSystem.AppDataDirectory, "us-states.db");
+        var dbPath = Path.Combine(FileSystem.AppDataDirectory, "ca-cities.db");
         builder.Services.AddSpatialGps<SampleGeofenceDelegate>(cfg => cfg
-            .Add(dbPath, "us_states")
+            .Add(dbPath, "cities")
         );
+
+        builder.Services.AddNotifications();
 
         return builder.Build();
     }

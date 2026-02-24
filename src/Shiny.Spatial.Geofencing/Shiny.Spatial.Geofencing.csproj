@@ -1,14 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net10.0-ios;net10.0-android</TargetFrameworks>
+        <TargetFrameworks>$(BaseTargetFramework)-ios;$(BaseTargetFramework)-android</TargetFrameworks>
+        <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">true</IsAotCompatible>
+        <IsTrimmable Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">true</IsTrimmable>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="../Shiny.Spatial/Shiny.Spatial.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Shiny.Locations"/>
     </ItemGroup>
 

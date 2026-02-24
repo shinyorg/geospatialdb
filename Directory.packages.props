@@ -1,17 +1,20 @@
 <Project>
     <PropertyGroup>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+        <ShinyVersion>4.0.0-beta-0095</ShinyVersion>
     </PropertyGroup>
     <ItemGroup>
+        <PackageVersion Include="Microsoft.Maui.Controls" Version="$(MauiVersion)"/>
         <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.3"/>
         <PackageVersion Include="Nerdbank.GitVersioning" Version="3.9.50"/>
         <PackageVersion Include="System.Memory" Version="4.6.0"/>
-        <PackageVersion Include="BenchmarkDotNet" Version="0.14.0"/>
+        <PackageVersion Include="BenchmarkDotNet" Version="0.15.8"/>
         <PackageVersion Include="Shouldly" Version="4.3.0"/>
         <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1"/>
         <PackageVersion Include="xunit" Version="2.9.3"/>
-        <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2"/>
-        <PackageVersion Include="Shiny.Locations" Version="4.0.0-beta-0095"/>
-        <PackageVersion Include="Shiny.Notifications" Version="4.0.0-beta-0095"/>
+        <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5"/>
+        <PackageVersion Include="Shiny.Locations" Version="$(ShinyVersion)"/>
+        <PackageVersion Include="Shiny.Notifications" Version="$(ShinyVersion)"/>
+        <PackageVersion Include="Shiny.Hosting.Maui" Version="$(ShinyVersion)"/>
     </ItemGroup>
 </Project>
