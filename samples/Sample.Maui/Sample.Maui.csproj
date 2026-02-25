@@ -17,6 +17,10 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <CodesignKey>iPhone Developer</CodesignKey>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\..\src\Shiny.Spatial.Geofencing\Shiny.Spatial.Geofencing.csproj" />
     </ItemGroup>

@@ -5,13 +5,18 @@
     x:Class="Sample.Maui.MainPage"
     Title="Spatial GPS">
 
-    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="20" RowSpacing="15">
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" Padding="20" RowSpacing="15">
 
-        <Button
-            x:Name="ToggleButton"
-            Text="Start GPS"
-            Clicked="OnToggleClicked"
-            Grid.Row="0" />
+        <HorizontalStackLayout Grid.Row="0" Spacing="10">
+            <Button
+                x:Name="ToggleButton"
+                Text="Start GPS"
+                Clicked="OnToggleClicked" />
+
+            <Button
+                Text="Get Current"
+                Clicked="OnGetCurrentClicked" />
+        </HorizontalStackLayout>
 
         <VerticalStackLayout Grid.Row="1" Spacing="5">
             <Label Text="Current State:" FontAttributes="Bold" />
@@ -24,6 +29,11 @@
         </VerticalStackLayout>
 
         <VerticalStackLayout Grid.Row="3" Spacing="5">
+            <Label Text="Get Current Result:" FontAttributes="Bold" />
+            <Label x:Name="GetCurrentLabel" Text="--" FontSize="18" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="4" Spacing="5">
             <Label Text="Change History:" FontAttributes="Bold" />
             <CollectionView x:Name="HistoryList">
                 <CollectionView.ItemTemplate>

@@ -36,12 +36,30 @@ public partial class MainPage : ContentPage
         });
     }
 
+    async void OnGetCurrentClicked(object? sender, EventArgs e)
+    {
+        try
+        {
+            var results = await this.geofences.GetCurrent();
+            var parts = results.Select(r =>
+            {
+                var name = r.Region?.Properties.GetValueOrDefault("name")?.ToString() ?? "None";
+                return $"{r.TableName}: {name}";
+            });
+            GetCurrentLabel.Text = string.Join(", ", parts);
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Get Current", $"Error: {ex.Message}", "OK");
+        }
+    }
+
     async void OnToggleClicked(object? sender, EventArgs e)
     {
         try
         {
             await this.notifications.RequestAccess();
-            
+
             if (isListening)
             {
                 await this.geofences.Stop();
