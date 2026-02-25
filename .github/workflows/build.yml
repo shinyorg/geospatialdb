@@ -38,7 +38,7 @@ jobs:
           dotnet-version: '10.0.x'
 
     - name: Build
-      run: dotnet build src/Shiny.Spatial/Shiny.Spatial.csproj /restore -m -property:Configuration=Release
+      run: dotnet build Shiny.Spatial.slnx /restore -m -property:Configuration=Release
 
     - name: Post NuGet Artifacts
       uses: actions/upload-artifact@v4

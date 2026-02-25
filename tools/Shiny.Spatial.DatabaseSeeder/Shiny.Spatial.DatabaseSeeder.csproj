@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>$(BaseTargetFramework)</TargetFramework>
         <OutputType>Exe</OutputType>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
