@@ -1,0 +1,13 @@
+﻿{
+    "solution": {
+        "path": "Shiny.Spatial.slnx",
+        "projects": [
+            "src\\Shiny.Spatial.Geofencing\\Shiny.Spatial.Geofencing.csproj",
+            "src\\Shiny.Spatial\\Shiny.Spatial.csproj",
+            "tests\\Shiny.Spatial.Benchmarks\\Shiny.Spatial.Benchmarks.csproj",
+            "tests\\Shiny.Spatial.Geofencing.Tests\\Shiny.Spatial.Geofencing.Tests.csproj",
+            "tests\\Shiny.Spatial.Tests\\Shiny.Spatial.Tests.csproj",
+            "tools\\Shiny.Spatial.DatabaseSeeder\\Shiny.Spatial.DatabaseSeeder.csproj"
+        ]
+    }
+}
