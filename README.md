@@ -1,6 +1,9 @@
 # Shiny.Spatial
 
 [![NuGet](https://img.shields.io/nuget/v/Shiny.Spatial.svg)](https://www.nuget.org/packages/Shiny.Spatial/)
+[![NuGet](https://img.shields.io/nuget/vpre/Shiny.Spatial.Geofencing.svg)](https://www.nuget.org/packages/Shiny.Spatial.Geofencing/)
+
+[Documentation](https://shinylib.net/spatial)
 
 A dependency-free, cross-platform .NET geospatial database library. Uses SQLite R\*Tree for spatial indexing with custom C# geometry algorithms for query refinement. No SpatiaLite, no NetTopologySuite — only SQLite via `Microsoft.Data.Sqlite`.
 

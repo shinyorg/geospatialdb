@@ -2,8 +2,11 @@ namespace Shiny.Spatial.Geofencing;
 
 public interface ISpatialGeofenceManager
 {
+    // TODO: ability to add shapes to monitor
+    // TODO: ability to load an existing database of shapes to monitor
+    
     /// <summary>
-    /// 
+    /// True if geofence detection is active
     /// </summary>
     bool IsStarted { get; }
     

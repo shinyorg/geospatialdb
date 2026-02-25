@@ -6,6 +6,7 @@
         <UseMaui>true</UseMaui>
         <SingleProject>true</SingleProject>
         <RootNamespace>Sample.Maui</RootNamespace>
+        <MauiXamlInflator>SourceGen</MauiXamlInflator>
 
         <ApplicationTitle>Spatial GPS Sample</ApplicationTitle>
         <ApplicationId>com.shinylib.spatial.sample</ApplicationId>
@@ -29,6 +30,10 @@
 
     <ItemGroup>
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)"/>
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#1A1A2E"/>
+        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#1A1A2E" BaseSize="128,128"/>
+        <MauiImage Include="Resources\Images\*"/>
+        <MauiFont Include="Resources\Fonts\*"/>
     </ItemGroup>
 
 </Project>
