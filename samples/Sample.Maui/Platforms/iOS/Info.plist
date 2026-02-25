@@ -17,10 +17,14 @@
         <string>UIInterfaceOrientationLandscapeLeft</string>
         <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>This app needs your location to detect state boundary crossings.</string>
+    <key>NSLocationTemporaryUsageDescription</key>
+    <string>Say something useful here that your users will understand</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Say something useful here that your users will understand</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>This app needs your location to detect state boundary crossings in the background.</string>
+    <string>Say something useful here that your users will understand</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Say something useful here that your users will understand</string>
     <key>UIBackgroundModes</key>
     <array>
         <string>location</string>
