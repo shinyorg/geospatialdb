@@ -11,51 +11,41 @@ public class SpatialRegionChangeTests
     [Fact]
     public void Record_Properties_Set_Correctly()
     {
-        var prev = new SpatialFeature(new Point(1, 2)) { Properties = { ["name"] = "Region A" } };
-        var curr = new SpatialFeature(new Point(3, 4)) { Properties = { ["name"] = "Region B" } };
+        var feature = new SpatialFeature(new Point(1, 2)) { Properties = { ["name"] = "Region A" } };
 
-        var change = new SpatialRegionChange("cities", prev, curr);
+        var change = new SpatialRegionChange("cities", feature, true);
 
         change.TableName.ShouldBe("cities");
-        change.PreviousRegion.ShouldBeSameAs(prev);
-        change.CurrentRegion.ShouldBeSameAs(curr);
+        change.Region.ShouldBeSameAs(feature);
+        change.Entered.ShouldBeTrue();
     }
 
     [Fact]
-    public void Enter_Region_Has_Null_Previous()
+    public void Enter_Region_Has_Entered_True()
     {
-        var curr = new SpatialFeature(new Point(1, 1));
-        var change = new SpatialRegionChange("regions", null, curr);
+        var feature = new SpatialFeature(new Point(1, 1));
+        var change = new SpatialRegionChange("regions", feature, true);
 
-        change.PreviousRegion.ShouldBeNull();
-        change.CurrentRegion.ShouldNotBeNull();
+        change.Entered.ShouldBeTrue();
+        change.Region.ShouldNotBeNull();
     }
 
     [Fact]
-    public void Exit_Region_Has_Null_Current()
+    public void Exit_Region_Has_Entered_False()
     {
-        var prev = new SpatialFeature(new Point(1, 1));
-        var change = new SpatialRegionChange("regions", prev, null);
+        var feature = new SpatialFeature(new Point(1, 1));
+        var change = new SpatialRegionChange("regions", feature, false);
 
-        change.PreviousRegion.ShouldNotBeNull();
-        change.CurrentRegion.ShouldBeNull();
-    }
-
-    [Fact]
-    public void Both_Null_Represents_No_Region()
-    {
-        var change = new SpatialRegionChange("regions", null, null);
-
-        change.PreviousRegion.ShouldBeNull();
-        change.CurrentRegion.ShouldBeNull();
+        change.Entered.ShouldBeFalse();
+        change.Region.ShouldNotBeNull();
     }
 
     [Fact]
     public void Record_Equality()
     {
         var feature = new SpatialFeature(new Point(1, 1));
-        var a = new SpatialRegionChange("t", feature, null);
-        var b = new SpatialRegionChange("t", feature, null);
+        var a = new SpatialRegionChange("t", feature, true);
+        var b = new SpatialRegionChange("t", feature, true);
 
         a.ShouldBe(b);
     }
@@ -64,8 +54,18 @@ public class SpatialRegionChangeTests
     public void Record_Inequality_Different_Table()
     {
         var feature = new SpatialFeature(new Point(1, 1));
-        var a = new SpatialRegionChange("t1", feature, null);
-        var b = new SpatialRegionChange("t2", feature, null);
+        var a = new SpatialRegionChange("t1", feature, true);
+        var b = new SpatialRegionChange("t2", feature, true);
+
+        a.ShouldNotBe(b);
+    }
+
+    [Fact]
+    public void Record_Inequality_Different_Entered()
+    {
+        var feature = new SpatialFeature(new Point(1, 1));
+        var a = new SpatialRegionChange("t", feature, true);
+        var b = new SpatialRegionChange("t", feature, false);
 
         a.ShouldNotBe(b);
     }
@@ -73,14 +73,13 @@ public class SpatialRegionChangeTests
     [Fact]
     public void Deconstruction()
     {
-        var prev = new SpatialFeature(new Point(0, 0));
-        var curr = new SpatialFeature(new Point(1, 1));
-        var change = new SpatialRegionChange("test", prev, curr);
+        var feature = new SpatialFeature(new Point(0, 0));
+        var change = new SpatialRegionChange("test", feature, true);
 
-        var (tableName, previousRegion, currentRegion) = change;
+        var (tableName, region, entered) = change;
 
         tableName.ShouldBe("test");
-        previousRegion.ShouldBeSameAs(prev);
-        currentRegion.ShouldBeSameAs(curr);
+        region.ShouldBeSameAs(feature);
+        entered.ShouldBeTrue();
     }
 }

@@ -16,13 +16,24 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        var dbPath = Path.Combine(FileSystem.AppDataDirectory, "ca-cities.db");
         builder.Services.AddSpatialGps<SampleGeofenceDelegate>(cfg => cfg
-            .Add(dbPath, "cities")
+            .Add(CopyAssetToAppData("ca-cities.db"), "cities")
         );
 
         builder.Services.AddNotifications();
 
         return builder.Build();
+    }
+
+    static string CopyAssetToAppData(string assetFileName)
+    {
+        var destPath = Path.Combine(FileSystem.AppDataDirectory, assetFileName);
+        if (!File.Exists(destPath))
+        {
+            using var source = FileSystem.OpenAppPackageFileAsync(assetFileName).GetAwaiter().GetResult();
+            using var dest = File.Create(destPath);
+            source.CopyTo(dest);
+        }
+        return destPath;
     }
 }

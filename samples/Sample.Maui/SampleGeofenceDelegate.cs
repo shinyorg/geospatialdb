@@ -13,18 +13,18 @@ public class SampleGeofenceDelegate(
 
     public async Task OnRegionChanged(SpatialRegionChange change)
     {
+        var regionName = change.Region.Properties.GetValueOrDefault("name") ?? "Unknown";
+        var action = change.Entered ? "Entered" : "Exited";
+
         logger.LogInformation(
-            "Region changed in {Table}: {Previous} -> {Current}",
+            "{Action} region in {Table}: {Region}",
+            action,
             change.TableName,
-            change.PreviousRegion?.Properties.GetValueOrDefault("name"),
-            change.CurrentRegion?.Properties.GetValueOrDefault("name")
+            regionName
         );
 
         RegionChanged?.Invoke(this, change);
 
-        var prev = change.PreviousRegion?.Properties.GetValueOrDefault("name") ?? "None";
-        var current = change.CurrentRegion?.Properties.GetValueOrDefault("name") ?? "None";
-            
-        await notifications.Send("Geofence Alert", $"Region changed: {prev} -> {current}");
+        await notifications.Send("Geofence Alert", $"{action}: {regionName}");
     }
 }

@@ -4,6 +4,6 @@ namespace Shiny.Spatial.Geofencing;
 
 public record SpatialRegionChange(
     string TableName,
-    SpatialFeature? PreviousRegion,
-    SpatialFeature? CurrentRegion
+    SpatialFeature Region,
+    bool Entered
 );

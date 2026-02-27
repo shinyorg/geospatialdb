@@ -19,13 +19,8 @@
         </HorizontalStackLayout>
 
         <VerticalStackLayout Grid.Row="1" Spacing="5">
-            <Label Text="Current State:" FontAttributes="Bold" />
+            <Label Text="Last Event:" FontAttributes="Bold" />
             <Label x:Name="CurrentStateLabel" Text="--" FontSize="24" />
-        </VerticalStackLayout>
-
-        <VerticalStackLayout Grid.Row="2" Spacing="5">
-            <Label Text="Previous State:" FontAttributes="Bold" />
-            <Label x:Name="PreviousStateLabel" Text="--" FontSize="18" TextColor="Gray" />
         </VerticalStackLayout>
 
         <VerticalStackLayout Grid.Row="3" Spacing="5">

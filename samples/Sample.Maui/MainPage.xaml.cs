@@ -26,13 +26,12 @@ public partial class MainPage : ContentPage
     {
         MainThread.BeginInvokeOnMainThread(() =>
         {
-            var previousName = change.PreviousRegion?.Properties.GetValueOrDefault("name")?.ToString() ?? "None";
-            var currentName = change.CurrentRegion?.Properties.GetValueOrDefault("name")?.ToString() ?? "None";
+            var regionName = change.Region.Properties.GetValueOrDefault("name")?.ToString() ?? "Unknown";
+            var action = change.Entered ? "Entered" : "Exited";
 
-            PreviousStateLabel.Text = previousName;
-            CurrentStateLabel.Text = currentName;
+            CurrentStateLabel.Text = $"{action}: {regionName}";
 
-            history.Insert(0, $"{DateTime.Now:HH:mm:ss} - {previousName} -> {currentName}");
+            history.Insert(0, $"{DateTime.Now:HH:mm:ss} - {action}: {regionName}");
         });
     }
 

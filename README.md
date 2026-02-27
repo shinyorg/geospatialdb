@@ -317,6 +317,93 @@ dotnet run --project tools/Shiny.Spatial.DatabaseSeeder -- ./databases
 
 The seeder contains hardcoded geographic data with simplified polygon boundaries for states/provinces and point locations for cities, using census population figures.
 
+## Geofencing (`Shiny.Spatial.Geofencing`)
+
+[![NuGet](https://img.shields.io/nuget/vpre/Shiny.Spatial.Geofencing.svg)](https://www.nuget.org/packages/Shiny.Spatial.Geofencing/)
+
+GPS-driven geofence monitoring for iOS and Android. Built on [Shiny.Locations](https://shinylib.net) for background GPS and `Shiny.Spatial` for spatial queries.
+
+The primary use case is monitoring preexisting spatial databases containing city and state/province polygons. Point the monitor at one or more spatial database tables and it detects region enter/exit automatically.
+
+### Installation
+
+```xml
+<PackageReference Include="Shiny.Spatial.Geofencing" Version="1.0.0" />
+```
+
+### Setup
+
+`Add()` requires a file path on disk. For databases bundled as MAUI raw assets (`Resources/Raw`), copy to `AppDataDirectory` first since SQLite cannot open files directly from the app package:
+
+```csharp
+// In MauiProgram.cs
+builder.Services.AddSpatialGps<MyGeofenceDelegate>(config =>
+{
+    config.MinimumDistance = Distance.FromMeters(300); // default
+    config.MinimumTime = TimeSpan.FromMinutes(1);     // default
+    config
+        .Add(CopyAssetToAppData("us-states.db"), "states")
+        .Add(CopyAssetToAppData("us-cities.db"), "cities");
+});
+
+// Helper to copy a MAUI raw asset to a writable location
+static string CopyAssetToAppData(string assetFileName)
+{
+    var destPath = Path.Combine(FileSystem.AppDataDirectory, assetFileName);
+    if (!File.Exists(destPath))
+    {
+        using var source = FileSystem.OpenAppPackageFileAsync(assetFileName).GetAwaiter().GetResult();
+        using var dest = File.Create(destPath);
+        source.CopyTo(dest);
+    }
+    return destPath;
+}
+```
+
+### Controlling the Monitor
+
+Use `ISpatialGeofenceManager` to start/stop geofence monitoring and query the current region:
+
+```csharp
+// Inject ISpatialGeofenceManager
+await geofences.RequestAccess();
+await geofences.Start();
+
+// Check current regions at any time
+var regions = await geofences.GetCurrent();
+foreach (var r in regions)
+{
+    var name = r.Region?.Properties.GetValueOrDefault("name") ?? "None";
+    Console.WriteLine($"{r.TableName}: {name}");
+}
+
+await geofences.Stop();
+```
+
+### Handling Events
+
+Implement `ISpatialGeofenceDelegate` to receive enter/exit events:
+
+```csharp
+public class MyGeofenceDelegate(ILogger<MyGeofenceDelegate> logger) : ISpatialGeofenceDelegate
+{
+    public Task OnRegionChanged(SpatialRegionChange change)
+    {
+        var regionName = change.Region.Properties.GetValueOrDefault("name") ?? "Unknown";
+        var action = change.Entered ? "Entered" : "Exited";
+        logger.LogInformation("{Action} {Region} in {Table}", action, regionName, change.TableName);
+        return Task.CompletedTask;
+    }
+}
+```
+
+Each `SpatialRegionChange` has:
+- `TableName` — the spatial table that was matched
+- `Region` — the `SpatialFeature` being entered or exited
+- `Entered` — `true` for entry, `false` for exit
+
+When transitioning directly from Region A to Region B, two events fire: exit A, then enter B.
+
 ## Project Structure
 
 ```
@@ -336,6 +423,16 @@ geospatialdb/
 │   │                           SpatialPredicates, EnvelopeExpander
 │   └── Database/               SpatialDatabase, SpatialTable, SpatialFeature, SpatialQuery
 │       └── Internal/           ConnectionPool, SchemaManager, SqlBuilder
+├── src/Shiny.Spatial.Geofencing/
+│   ├── Shiny.Spatial.Geofencing.csproj
+│   ├── ISpatialGeofenceDelegate.cs     Delegate interface for enter/exit events
+│   ├── ISpatialGeofenceManager.cs      Manager interface (start/stop/get current)
+│   ├── SpatialGpsDelegate.cs           GPS listener that detects region changes
+│   ├── SpatialMonitorConfig.cs         Configuration (databases, tables, thresholds)
+│   ├── SpatialRegionChange.cs          Event data (Region, Entered bool)
+│   ├── ServiceCollectionExtensions.cs  DI registration (AddSpatialGps)
+│   └── Infrastructure/
+│       └── SpatialGeofenceManager.cs   Manager implementation
 ├── tests/Shiny.Spatial.Tests/
 │   ├── GeometryTests.cs
 │   ├── WkbTests.cs
@@ -343,12 +440,16 @@ geospatialdb/
 │   ├── DatabaseTests.cs
 │   ├── QueryTests.cs
 │   └── PerformanceTests.cs
+├── tests/Shiny.Spatial.Geofencing.Tests/
+│   ├── SpatialGpsDelegateTests.cs      GPS delegate enter/exit/transition tests
+│   └── SpatialRegionChangeTests.cs     Record equality and deconstruction tests
 ├── tests/Shiny.Spatial.Benchmarks/
 │   ├── InsertBenchmarks.cs
 │   ├── SpatialQueryBenchmarks.cs
 │   ├── QueryBuilderBenchmarks.cs
 │   ├── AlgorithmBenchmarks.cs
 │   └── SerializationBenchmarks.cs
+├── samples/Sample.Maui/               MAUI sample app with geofencing
 └── tools/Shiny.Spatial.DatabaseSeeder/
     ├── Shiny.Spatial.DatabaseSeeder.csproj
     ├── Program.cs

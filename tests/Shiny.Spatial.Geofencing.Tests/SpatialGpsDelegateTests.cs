@@ -98,9 +98,8 @@ public class SpatialGpsDelegateTests : IDisposable
         await gpsDelegate.SimulateGpsReading(MakeReading(0, 0));
 
         testDelegate.Changes.Count.ShouldBe(1);
-        testDelegate.Changes[0].PreviousRegion.ShouldBeNull();
-        testDelegate.Changes[0].CurrentRegion.ShouldNotBeNull();
-        testDelegate.Changes[0].CurrentRegion!.Properties["name"].ShouldBe("Region A");
+        testDelegate.Changes[0].Entered.ShouldBeTrue();
+        testDelegate.Changes[0].Region.Properties["name"].ShouldBe("Region A");
         testDelegate.Changes[0].TableName.ShouldBe("zones");
     }
 
@@ -123,17 +122,16 @@ public class SpatialGpsDelegateTests : IDisposable
         testDelegate.Changes.Count.ShouldBe(2);
 
         // First change: enter
-        testDelegate.Changes[0].PreviousRegion.ShouldBeNull();
-        testDelegate.Changes[0].CurrentRegion.ShouldNotBeNull();
+        testDelegate.Changes[0].Entered.ShouldBeTrue();
+        testDelegate.Changes[0].Region.Properties["name"].ShouldBe("Region A");
 
         // Second change: exit
-        testDelegate.Changes[1].PreviousRegion.ShouldNotBeNull();
-        testDelegate.Changes[1].PreviousRegion!.Properties["name"].ShouldBe("Region A");
-        testDelegate.Changes[1].CurrentRegion.ShouldBeNull();
+        testDelegate.Changes[1].Entered.ShouldBeFalse();
+        testDelegate.Changes[1].Region.Properties["name"].ShouldBe("Region A");
     }
 
     [Fact]
-    public async Task Move_Between_Regions_Fires_Change()
+    public async Task Move_Between_Regions_Fires_Exit_And_Enter()
     {
         var regionA = MakePolygonRegion("Region A", -10, -10, 0, 0);
         var regionB = MakePolygonRegion("Region B", 10, 10, 20, 20);
@@ -149,10 +147,19 @@ public class SpatialGpsDelegateTests : IDisposable
         // Move to region B
         await gpsDelegate.SimulateGpsReading(MakeReading(15, 15));
 
-        testDelegate.Changes.Count.ShouldBe(2);
-        testDelegate.Changes[0].CurrentRegion!.Properties["name"].ShouldBe("Region A");
-        testDelegate.Changes[1].PreviousRegion!.Properties["name"].ShouldBe("Region A");
-        testDelegate.Changes[1].CurrentRegion!.Properties["name"].ShouldBe("Region B");
+        testDelegate.Changes.Count.ShouldBe(3);
+
+        // Enter A
+        testDelegate.Changes[0].Entered.ShouldBeTrue();
+        testDelegate.Changes[0].Region.Properties["name"].ShouldBe("Region A");
+
+        // Exit A
+        testDelegate.Changes[1].Entered.ShouldBeFalse();
+        testDelegate.Changes[1].Region.Properties["name"].ShouldBe("Region A");
+
+        // Enter B
+        testDelegate.Changes[2].Entered.ShouldBeTrue();
+        testDelegate.Changes[2].Region.Properties["name"].ShouldBe("Region B");
     }
 
     [Fact]
@@ -211,6 +218,7 @@ public class SpatialGpsDelegateTests : IDisposable
         await gpsDelegate.SimulateGpsReading(MakeReading(-104.5, 39.5));
 
         testDelegate.Changes.Count.ShouldBe(2);
+        testDelegate.Changes.ShouldAllBe(c => c.Entered);
         testDelegate.Changes.ShouldContain(c => c.TableName == "cities");
         testDelegate.Changes.ShouldContain(c => c.TableName == "states");
     }
@@ -240,8 +248,8 @@ public class SpatialGpsDelegateTests : IDisposable
 
         testDelegate.Changes.Count.ShouldBe(1);
         testDelegate.Changes[0].TableName.ShouldBe("cities");
-        testDelegate.Changes[0].PreviousRegion.ShouldNotBeNull();
-        testDelegate.Changes[0].CurrentRegion.ShouldBeNull();
+        testDelegate.Changes[0].Entered.ShouldBeFalse();
+        testDelegate.Changes[0].Region.Properties["name"].ShouldBe("Denver");
     }
 
     [Fact]
@@ -271,6 +279,7 @@ public class SpatialGpsDelegateTests : IDisposable
         await gpsDelegate.SimulateGpsReading(MakeReading(0, 0));
 
         testDelegate.Changes.Count.ShouldBe(2);
+        testDelegate.Changes.ShouldAllBe(c => c.Entered);
     }
 
     [Fact]
@@ -329,15 +338,15 @@ public class SpatialGpsDelegateTests : IDisposable
         testDelegate.Changes.Count.ShouldBe(3);
 
         // Enter
-        testDelegate.Changes[0].PreviousRegion.ShouldBeNull();
-        testDelegate.Changes[0].CurrentRegion.ShouldNotBeNull();
+        testDelegate.Changes[0].Entered.ShouldBeTrue();
+        testDelegate.Changes[0].Region.Properties["name"].ShouldBe("Region A");
 
         // Exit
-        testDelegate.Changes[1].PreviousRegion.ShouldNotBeNull();
-        testDelegate.Changes[1].CurrentRegion.ShouldBeNull();
+        testDelegate.Changes[1].Entered.ShouldBeFalse();
+        testDelegate.Changes[1].Region.Properties["name"].ShouldBe("Region A");
 
         // Re-enter
-        testDelegate.Changes[2].PreviousRegion.ShouldBeNull();
-        testDelegate.Changes[2].CurrentRegion.ShouldNotBeNull();
+        testDelegate.Changes[2].Entered.ShouldBeTrue();
+        testDelegate.Changes[2].Region.Properties["name"].ShouldBe("Region A");
     }
 }

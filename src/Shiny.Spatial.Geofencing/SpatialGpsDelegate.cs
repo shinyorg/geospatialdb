@@ -67,18 +67,31 @@ public class SpatialGpsDelegate : GpsDelegate, IDisposable
                 if (previousId != currentId)
                 {
                     currentRegions[key] = feature;
-
                     var tableName = key.Split('|')[1];
-                    var change = new SpatialRegionChange(tableName, previousFeature, feature);
 
-                    logger.LogInformation(
-                        "Region changed in {TableName}: {Previous} -> {Current}",
-                        tableName,
-                        previousFeature?.Properties.GetValueOrDefault("name"),
-                        feature?.Properties.GetValueOrDefault("name")
-                    );
+                    if (previousFeature != null)
+                    {
+                        logger.LogInformation(
+                            "Exited region in {TableName}: {Region}",
+                            tableName,
+                            previousFeature.Properties.GetValueOrDefault("name")
+                        );
+                        await geofenceDelegate
+                            .OnRegionChanged(new SpatialRegionChange(tableName, previousFeature, false))
+                            .ConfigureAwait(false);
+                    }
 
-                    await geofenceDelegate.OnRegionChanged(change).ConfigureAwait(false);
+                    if (feature != null)
+                    {
+                        logger.LogInformation(
+                            "Entered region in {TableName}: {Region}",
+                            tableName,
+                            feature.Properties.GetValueOrDefault("name")
+                        );
+                        await geofenceDelegate
+                            .OnRegionChanged(new SpatialRegionChange(tableName, feature, true))
+                            .ConfigureAwait(false);
+                    }
                 }
             }
         }
