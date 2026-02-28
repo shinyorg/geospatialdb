@@ -7,7 +7,13 @@
 
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" Padding="20" RowSpacing="15">
 
-        <HorizontalStackLayout Grid.Row="0" Spacing="10">
+        <HorizontalStackLayout Grid.Row="0" Spacing="15" VerticalOptions="Center">
+            <Image
+                Source="shiny.svg"
+                HeightRequest="48"
+                WidthRequest="48"
+                VerticalOptions="Center" />
+
             <Button
                 x:Name="ToggleButton"
                 Text="Start GPS"
@@ -15,25 +21,33 @@
 
             <Button
                 Text="Get Current"
+                BackgroundColor="{StaticResource Gray600}"
+                TextColor="White"
                 Clicked="OnGetCurrentClicked" />
         </HorizontalStackLayout>
 
-        <VerticalStackLayout Grid.Row="1" Spacing="5">
-            <Label Text="Last Event:" FontAttributes="Bold" />
-            <Label x:Name="CurrentStateLabel" Text="--" FontSize="24" />
-        </VerticalStackLayout>
+        <Border Grid.Row="1" Padding="15" StrokeShape="RoundRectangle 8" Stroke="{StaticResource Gray200}" BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Last Event" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource Gray500}" />
+                <Label x:Name="CurrentStateLabel" Text="--" FontSize="24" TextColor="{StaticResource Primary}" />
+            </VerticalStackLayout>
+        </Border>
 
-        <VerticalStackLayout Grid.Row="3" Spacing="5">
-            <Label Text="Get Current Result:" FontAttributes="Bold" />
-            <Label x:Name="GetCurrentLabel" Text="--" FontSize="18" />
-        </VerticalStackLayout>
+        <Border Grid.Row="3" Padding="15" StrokeShape="RoundRectangle 8" Stroke="{StaticResource Gray200}" BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Get Current Result" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource Gray500}" />
+                <Label x:Name="GetCurrentLabel" Text="--" FontSize="18" />
+            </VerticalStackLayout>
+        </Border>
 
         <VerticalStackLayout Grid.Row="4" Spacing="5">
-            <Label Text="Change History:" FontAttributes="Bold" />
+            <Label Text="Change History" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource Gray500}" />
             <CollectionView x:Name="HistoryList">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Label Text="{Binding .}" Padding="0,4" />
+                        <Border Padding="10" Margin="0,2" StrokeShape="RoundRectangle 6" Stroke="{StaticResource Gray200}">
+                            <Label Text="{Binding .}" />
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

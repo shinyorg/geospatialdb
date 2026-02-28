@@ -19,6 +19,7 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <CodesignKey>iPhone Developer</CodesignKey>
+      <MtouchExtraArgs>-v -v -v -v</MtouchExtraArgs>
     </PropertyGroup>
 
     <ItemGroup>
