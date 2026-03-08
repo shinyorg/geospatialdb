@@ -12,9 +12,5 @@
     <ItemGroup>
         <ProjectReference Include="../Shiny.Spatial/Shiny.Spatial.csproj"/>
         <PackageReference Include="Shiny.Locations"/>
-        <PackageReference Include="Nerdbank.GitVersioning">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
     </ItemGroup>
 </Project>

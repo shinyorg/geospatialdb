@@ -6,9 +6,5 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Data.Sqlite"/>
-        <PackageReference Include="Nerdbank.GitVersioning">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
     </ItemGroup>
 </Project>
