@@ -1,7 +1,7 @@
 <Project>
     <PropertyGroup>
         <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-        <ShinyVersion>4.0.0-beta-0095</ShinyVersion>
+        <ShinyVersion>4.0.1</ShinyVersion>
     </PropertyGroup>
     <ItemGroup>
         <PackageVersion Include="Microsoft.Maui.Controls" Version="$(MauiVersion)"/>
