@@ -19,7 +19,7 @@
         <PackageProjectUrl>https://shinylib.net</PackageProjectUrl>
         <PackageTags>sqlite shiny spatial geospatial</PackageTags>
         
-        <MauiVersion>10.0.41</MauiVersion>
+        <MauiVersion>10.0.51</MauiVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
