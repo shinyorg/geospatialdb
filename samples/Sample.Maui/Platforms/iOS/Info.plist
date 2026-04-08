@@ -7,16 +7,14 @@
         <integer>1</integer>
         <integer>2</integer>
     </array>
-    <key>UIRequiredDeviceCapabilities</key>
-    <array>
-        <string>arm64</string>
-    </array>
     <key>UISupportedInterfaceOrientations</key>
     <array>
         <string>UIInterfaceOrientationPortrait</string>
         <string>UIInterfaceOrientationLandscapeLeft</string>
         <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
+    <key>XSAppIconAssets</key>
+    <string>Assets.xcassets/appicon.appiconset</string>
     <key>NSLocationTemporaryUsageDescription</key>
     <string>Say something useful here that your users will understand</string>
     <key>NSLocationAlwaysUsageDescription</key>
@@ -25,6 +23,11 @@
     <string>Say something useful here that your users will understand</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Say something useful here that your users will understand</string>
+    s    <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+    <dict>
+        <key>shinygps</key>
+        <string>This app wants to know EXACTLY where you are</string>
+    </dict>
     <key>UIBackgroundModes</key>
     <array>
         <string>location</string>

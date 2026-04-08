@@ -10,7 +10,6 @@ public partial class MainPage : ContentPage
     readonly ISpatialGeofenceManager geofences;
     readonly INotificationManager notifications;
     readonly ObservableCollection<string> history = new();
-    bool isListening;
 
     public MainPage(ISpatialGeofenceManager geofences, INotificationManager notifications)
     {
@@ -20,6 +19,7 @@ public partial class MainPage : ContentPage
         HistoryList.ItemsSource = history;
 
         SampleGeofenceDelegate.RegionChanged += OnRegionChanged;
+        this.SetButtonText();
     }
 
     void OnRegionChanged(object? sender, SpatialRegionChange change)
@@ -59,22 +59,21 @@ public partial class MainPage : ContentPage
         {
             await this.notifications.RequestAccess();
 
-            if (isListening)
-            {
+            if (this.geofences.IsStarted)
                 await this.geofences.Stop();
-                isListening = false;
-                ToggleButton.Text = "Start Geofencing";
-            }
             else
-            {
                 await this.geofences.Start();
-                isListening = true;
-                ToggleButton.Text = "Stop Geofencing";
-            }
+            
+            this.SetButtonText();
         }
         catch (Exception ex)
         {
             await DisplayAlertAsync("Geofencing", $"Geofencing error: {ex.Message}", "OK");
         }
+    }
+
+    void SetButtonText()
+    {
+        ToggleButton.Text = this.geofences.IsStarted ? "Stop Geofencing" : "Start Geofencing";
     }
 }

@@ -9,7 +9,7 @@
         <MauiXamlInflator>SourceGen</MauiXamlInflator>
 
         <ApplicationTitle>Spatial GPS Sample</ApplicationTitle>
-        <ApplicationId>com.shinylib.spatial.sample</ApplicationId>
+        <ApplicationId>org.shiny.spatialsample</ApplicationId>
         <ApplicationVersion>1</ApplicationVersion>
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 
@@ -18,12 +18,12 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <CodesignKey>iPhone Developer</CodesignKey>
-      <MtouchExtraArgs>-v -v -v -v</MtouchExtraArgs>
+        <CodesignKey>iPhone Developer</CodesignKey>
+        <MtouchExtraArgs>-v -v -v -v</MtouchExtraArgs>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Shiny.Spatial.Geofencing\Shiny.Spatial.Geofencing.csproj" />
+        <ProjectReference Include="..\..\src\Shiny.Spatial.Geofencing\Shiny.Spatial.Geofencing.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
