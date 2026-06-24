@@ -374,6 +374,8 @@ builder.Services.AddSpatialGps<MyGeofenceDelegate>(config =>
 {
     config.MinimumDistance = Distance.FromMeters(300); // default
     config.MinimumTime = TimeSpan.FromMinutes(1);     // default
+    config.MaximumDistance = Distance.FromKilometers(1); // optional safety net (unset by default)
+    config.MaximumTime = TimeSpan.FromMinutes(5);        // optional safety net (unset by default)
     config
         .Add(CopyAssetToAppData("us-states.db"), "states")
         .Add(CopyAssetToAppData("us-cities.db"), "cities");
@@ -461,11 +463,14 @@ public class SpatialMonitorConfig
     public List<SpatialMonitorEntry> Entries { get; }
     public Distance? MinimumDistance { get; set; } // default: 300m
     public TimeSpan? MinimumTime { get; set; }    // default: 1 minute
+    public Distance? MaximumDistance { get; set; } // default: unset
+    public TimeSpan? MaximumTime { get; set; }    // default: unset
     public SpatialMonitorConfig Add(string databasePath, string tableName);
 }
 ```
 
 - `Add()` takes a file path on disk — for MAUI raw assets, copy to `AppDataDirectory` first (see setup example above)
+- `MinimumDistance`/`MinimumTime` use **AND** logic (both must be met before a reading is processed); `MaximumDistance`/`MaximumTime` use **OR** logic and override the minimums — crossing either forces the reading through. Leave the maximums unset (default) to disable the safety net.
 
 ### Delegate Example
 

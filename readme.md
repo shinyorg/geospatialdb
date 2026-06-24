@@ -22,7 +22,7 @@ A dependency-free, cross-platform .NET geospatial database library. Uses SQLite 
 ## Installation
 
 ```xml
-<PackageReference Include="Shiny.Spatial" Version="1.0.0" />
+<PackageReference Include="Shiny.Spatial" Version="2.0.0" />
 ```
 
 ### Target Frameworks
@@ -328,7 +328,7 @@ The primary use case is monitoring preexisting spatial databases containing city
 ### Installation
 
 ```xml
-<PackageReference Include="Shiny.Spatial.Geofencing" Version="1.0.0" />
+<PackageReference Include="Shiny.Spatial.Geofencing" Version="2.0.0" />
 ```
 
 ### Setup
@@ -341,6 +341,8 @@ builder.Services.AddSpatialGps<MyGeofenceDelegate>(config =>
 {
     config.MinimumDistance = Distance.FromMeters(300); // default
     config.MinimumTime = TimeSpan.FromMinutes(1);     // default
+    config.MaximumDistance = Distance.FromKilometers(1); // optional safety net (unset by default)
+    config.MaximumTime = TimeSpan.FromMinutes(5);        // optional safety net (unset by default)
     config
         .Add(CopyAssetToAppData("us-states.db"), "states")
         .Add(CopyAssetToAppData("us-cities.db"), "cities");

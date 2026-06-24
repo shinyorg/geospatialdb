@@ -29,6 +29,12 @@ public class SpatialGpsDelegate : GpsDelegate, IDisposable
 
         if (config.MinimumTime != null)
             this.MinimumTime = config.MinimumTime;
+        
+        if (config.MaximumDistance != null)
+            this.MaximumDistance = config.MaximumDistance;
+        
+        if (config.MaximumTime != null)
+            this.MaximumTime = config.MaximumTime;
     }
 
     void EnsureTablesLoaded()

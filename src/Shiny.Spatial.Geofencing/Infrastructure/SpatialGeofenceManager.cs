@@ -1,4 +1,3 @@
-using System.Reactive.Threading.Tasks;
 using Shiny.Locations;
 using Shiny.Spatial.Database;
 using Shiny.Spatial.Geometry;
@@ -18,7 +17,7 @@ public class SpatialGeofenceManager(
 
     public async Task<IReadOnlyList<SpatialCurrentRegion>> GetCurrent(CancellationToken cancelToken = default)
     {
-        var reading = await gpsManager.GetCurrentPosition().ToTask(cancelToken).ConfigureAwait(false);
+        var reading = await gpsManager.GetCurrentPosition(cancelToken).ConfigureAwait(false);
         var point = new Point(reading.Position.Longitude, reading.Position.Latitude);
         var results = new List<SpatialCurrentRegion>();
 

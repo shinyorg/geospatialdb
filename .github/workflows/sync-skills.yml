@@ -33,12 +33,12 @@ jobs:
       - name: Sync skills directory
         run: |
           # Copy skills content only (not plugin manifests)
-          # The target repo has its own plugin structure
+          # The target repo organizes skills under plugins/<plugin>/skills/<skill>
           if [ -d "source/SKILLS/shiny-spatial" ]; then
             # Remove existing skill directory to ensure clean sync
-            rm -rf skills-repo/skills/shiny-spatial
-            mkdir -p skills-repo/skills
-            cp -r source/SKILLS/shiny-spatial skills-repo/skills/
+            rm -rf skills-repo/plugins/shiny-data/skills/shiny-spatial
+            mkdir -p skills-repo/plugins/shiny-data/skills
+            cp -r source/SKILLS/shiny-spatial skills-repo/plugins/shiny-data/skills/
           fi
 
       - name: Create Pull Request
