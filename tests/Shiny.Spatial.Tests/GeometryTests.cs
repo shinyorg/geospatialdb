@@ -51,6 +51,26 @@ public class GeometryTests
     }
 
     [Fact]
+    public void Coordinate_ImplicitlyConvertsToPoint()
+    {
+        Point p = new Coordinate(-104.99, 39.74);
+        p.X.ShouldBe(-104.99);
+        p.Y.ShouldBe(39.74);
+        p.Type.ShouldBe(GeometryType.Point);
+    }
+
+    [Fact]
+    public void Coordinate_ImplicitlyConvertsToGeometry()
+    {
+        // a bare coordinate must flow into Geometry-typed parameters directly
+        // (C# won't chain Coordinate -> Point -> Geometry)
+        Geometry.Geometry g = new Coordinate(1, 2);
+        g.ShouldBeOfType<Point>();
+        ((Point)g).X.ShouldBe(1);
+        ((Point)g).Y.ShouldBe(2);
+    }
+
+    [Fact]
     public void LineString_RequiresAtLeastTwoCoordinates()
     {
         var act = () => new LineString(new[] { new Coordinate(0, 0) });

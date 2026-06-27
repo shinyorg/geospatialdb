@@ -84,7 +84,7 @@ All geometry classes are immutable and sealed, extending the abstract `Geometry`
 
 | Type | Description |
 |---|---|
-| `Coordinate` | Readonly struct with `X`/`Y` (aliased as `Longitude`/`Latitude`) |
+| `Coordinate` | Readonly struct with `X`/`Y` (aliased as `Longitude`/`Latitude`); implicitly converts to `Point` |
 | `Envelope` | Readonly struct — bounding box with `MinX`, `MaxX`, `MinY`, `MaxY` |
 | `Point` | Single coordinate |
 | `LineString` | Ordered sequence of coordinates (minimum 2) |
@@ -241,6 +241,8 @@ var results = table.Query()
 int count = table.Query().InEnvelope(envelope).Count();
 var first = table.Query().WithinDistance(center, 1000).FirstOrDefault();
 ```
+
+> **Coordinate vs geometry parameters:** `WithinDistance`/`OrderByDistance` (and `FindWithinDistance`) take a `Coordinate`; the geometry methods `Intersecting`/`ContainedBy` (and `FindIntersecting`/`FindContainedBy`) take a `Geometry`. A `Coordinate` implicitly converts to a `Point`, so you can pass a bare lon/lat to the geometry methods directly — e.g. `query.Intersecting(new Coordinate(lon, lat))` — without writing `new Point(...)`.
 
 ## Algorithms
 

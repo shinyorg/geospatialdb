@@ -145,7 +145,7 @@ All geometry classes are immutable and sealed, extending the abstract `Geometry`
 
 | Type | Description |
 |---|---|
-| `Coordinate` | Readonly struct with `X`/`Y` (aliased as `Longitude`/`Latitude`) |
+| `Coordinate` | Readonly struct with `X`/`Y` (aliased as `Longitude`/`Latitude`); implicitly converts to `Point` so a bare lon/lat can be passed to geometry methods like `Intersecting`/`FindIntersecting` |
 | `Envelope` | Readonly struct — bounding box with `MinX`, `MaxX`, `MinY`, `MaxY` |
 | `Point` | Single coordinate |
 | `LineString` | Ordered sequence of coordinates (minimum 2) |

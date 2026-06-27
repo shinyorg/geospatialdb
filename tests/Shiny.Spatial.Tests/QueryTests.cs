@@ -54,6 +54,18 @@ public class QueryTests : IDisposable
     }
 
     [Fact]
+    public void FluentQuery_Intersecting_AcceptsBareCoordinate()
+    {
+        // the geometry-based query methods take Geometry; a bare Coordinate must flow
+        // in via the implicit conversion without constructing a Point first
+        var results = _table.Query()
+            .Intersecting(new Coordinate(-104.99, 39.74))
+            .ToList();
+
+        results.ShouldContain(f => (string?)f.Properties["name"] == "Denver");
+    }
+
+    [Fact]
     public void FluentQuery_WithinDistance_And_PropertyFilter()
     {
         var center = new Coordinate(-104.99, 39.74);
